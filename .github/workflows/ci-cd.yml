@@ -102,13 +102,4 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/ssis-web:${{ github.sha }}
 
 
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-    steps:
-    - name: Trigger Production Deploy (Render Example)
-      run: |
-        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
-        echo "🚀 Deployment Triggered Successfully!"
+  
