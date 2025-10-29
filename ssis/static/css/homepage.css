@@ -1,334 +1,661 @@
-@import 
-url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+/* ===========================
+   HOMEPAGE.CSS — Modernized
+   =========================== */
+
+/* Use <link> in HTML for faster font loading, but keep @import for drop-in */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* ---- Reset & Variables ---- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root{
+  --font-sans: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+
+  /* Colors */
+  --clr-bg: #f8fafc;
+  --clr-surface: #ffffff;
+  --clr-text: #1f2937;
+  --clr-muted: #666262;
+  --clr-accent: #F93939;
+  --clr-accent-2: #88ABFC;
+  --clr-dark: #211C1C;
+
+  /* Radius & Shadows */
+  --radius-lg: 30px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 4px 6px rgba(0,0,0,.12);
+  --shadow-md: 0 6px 12px rgba(0,0,0,.18);
+}
+
+/* Optional dark-mode tweak */
+@media (prefers-color-scheme: dark){
+  :root{
+    --clr-bg:#0f1115;
+    --clr-surface:#151922;
+    --clr-text:#e5e7eb;
+    --clr-muted:#9aa4b2;
+    --shadow-sm: 0 4px 8px rgba(0,0,0,.5);
+    --shadow-md: 0 8px 16px rgba(0,0,0,.55);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
 body{
-    background-image: url('../images/MSUIITlogo.png');
-    background-repeat: no-repeat;
-    background-size: 800px;
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+
+  /* Background watermark responsive */
+  background-image: url('../images/MSUIITlogo.png');
+  background-repeat: no-repeat;
+  background-size: clamp(22rem, 50vw, 50rem); /* ~350–800px */
+  background-position: center 2rem;
 }
 
+/* Buttons sizes */
 .logout-btn{
-    width: 106px;
-    height: 44px;
+  inline-size: 6.625rem;  /* 106px */
+  block-size: 2.75rem;    /* 44px */
 }
 
-
+/* Main card */
 #main-content{
-    background-color: #fff;
-    border-radius: 30px; 
-    box-shadow: 0px 4px 4px grey;
-    height: 600px;
-    padding: auto;
+  background-color: var(--clr-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  min-block-size: 37.5rem; /* 600px */
+  padding: clamp(1rem, 2vw, 1.5rem);
+  margin-block: 1rem;
 }
+
+/* Nav item hover */
 .nav-item:hover{
-    background-color: white;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.20);
-    border-radius: 30px;
+  background-color: var(--clr-surface);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
 }
 
+/* Active link color */
 #activeLink{
-    color: #F93939;
-    font-weight: 500;
+  color: var(--clr-accent);
+  font-weight: 600;
 }
-#activeLink:hover{
-    color: white;
-}
+#activeLink:hover{ color: #fff; }
 
+/* Active pill */
 .active{
-    background-color: #fff;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.20);
-    border-radius: 30px;
-    border: 1px solid #F93939;
+  background-color: var(--clr-surface);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--clr-accent);
 }
 .active:hover{
-    background-color: #F93939;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.20);
-    border-radius: 30px;
-    border: 1px solid #F93939;
+  background-color: var(--clr-accent);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--clr-accent);
 }
 
-.table{
-    background: #fff;
-}
+/* Tables */
+.table{ background: var(--clr-surface); }
 th{
-    position: sticky;
-    top: 25%;
+  position: sticky;
+  top: 0;                 /* 0 is standard for sticky headers */
+  background: var(--clr-surface);
+  z-index: 1;
 }
 caption{
-    background-color: white;
-    position: sticky;
-    padding-top: 0%;
-    top: 0;
+  background-color: var(--clr-surface);
+  position: sticky;
+  top: 0;
+  padding-block-start: 0;
+  z-index: 2;
 }
 .caption-upper, .caption-lower{
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
-#table-photo{
-    border-radius: 50px;
+#table-photo{ border-radius: 50px; }
+
+/* Add New button (icon-only) */
+#addNew{
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-lg);
+  transition: box-shadow .2s ease, transform .08s ease;
+  cursor: pointer;
+}
+#addNew:hover{ box-shadow: var(--shadow-sm); }
+#addNew:active{ transform: scale(.98); }
+
+#addICON{ block-size: 53px; inline-size: 52px; }
+#addcollegeICON{ block-size: 50px; inline-size: 54px; }
+
+/* Logout pill */
+.logout{
+  position: relative;
+  inline-size: 80px;
+  block-size: 25px;
+  background-color: #898989;
+  border-radius: var(--radius-full);
+  transition: background-color .25s ease, transform .08s ease;
+}
+.logout:hover{ background-color: var(--clr-accent); }
+.logout:active{ transform: scale(.98); }
+
+.logout-text{
+  color: #fff;
+  font-weight: 500; /* fixed invalid 500px */
 }
 
-#addNew{
-    border: 0px;
-    background-color: transparent;
-}
-#addNew:hover{
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.20);
-    border-radius: 30px;
-}
-#addICON{
-    height: 53px;
-    width: 52px;
-}
-#addcollegeICON{
-    height: 50px;
-    width: 54px;
-}
-.logout{
-    position: relative;
-    width: 80px;
-    height: 25px;
-    background-color: #898989;
-    border-radius: 45px;
-    transition: 0.5s;
-}
-.logout-text{
-    color: white;
-    font-weight: 500px;
-}
+/* Fields */
 #field{
-    width: 150px;
-    max-width: 100%;
-    height: 10%;
+  inline-size: 150px;
+  max-inline-size: 100%;
+  block-size: auto;
 }
 .searchfield{
-    width: 600px;
-    max-width: 100%;
-    height: 10%;
-    border: 2px solid #F93939;
-    border-radius: 30px;
+  inline-size: min(600px, 100%);
+  border: 2px solid var(--clr-accent);
+  border-radius: 30px;
+  padding: .55rem .9rem;
+  background: var(--clr-surface);
+  color: var(--clr-text);
 }
 
+/* Search icon button */
 .btn-search{
-    border: transparent;
-    background-color: transparent;
+  border: none;
+  background: transparent;
 }
+
 .search{
-    position: relative;
-    width: 45px;
-    height: 45px;
-    background-color: #88ABFC;
-    border-radius: 45px;
-    transition: 0.5s;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) ;
+  position: relative;
+  inline-size: 45px;
+  block-size: 45px;
+  background-color: var(--clr-accent-2);
+  border-radius: var(--radius-full);
+  transition: box-shadow .2s ease, transform .08s ease;
+  box-shadow: var(--shadow-md);
 }
 .search:active{
-    box-shadow: 12px 12px 4px white ;
+  transform: translateY(1px);
+  box-shadow: 0 8px 12px rgba(255,255,255,.25);
 }
-
 .search .icon{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 45px;
-    height: 45px;
-    background-color: #88ABFC;
-    border-radius: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: absolute;
+  inset: 0;
+  background-color: var(--clr-accent-2);
+  border-radius: var(--radius-full);
+  display: grid;
+  place-items: center;
+  z-index: 1;
 }
-
 .search .icon:before{
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 3px solid white;
-    border-radius: 50%;
-    transform: translate(-4px, -4px) rotate(315deg);
+  content: '';
+  position: absolute;
+  inline-size: 20px;
+  block-size: 20px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  transform: translate(-4px, -4px) rotate(315deg);
 }
-
 .search .icon:after{
-    content: '';
-    position: absolute;
-    width: 3px;
-    height: 12px;
-    background-color: white;
-    transform: translate(7px, 7px) rotate(315deg);
+  content: '';
+  position: absolute;
+  inline-size: 3px;
+  block-size: 12px;
+  background-color: #fff;
+  transform: translate(7px, 7px) rotate(315deg);
 }
 
+/* Footer */
 footer{
-    background-color: #211C1C;
-    color: white;
+  background-color: var(--clr-dark);
+  color: #fff;
 }
-
 #footer1 {
-    font-size: 12px;
-    margin: 10px;
+  font-size: 12px;
+  margin: 10px;
 }
 
-
-/*Image file style*/
+/* ---- Image file style ---- */
 .image-container{
-    height: 200px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #C4C4C4;
-    border-radius: 30px 30px 0px 0px;
-    position:sticky;
-    padding-top: 0%;
-    top: 0;
+  block-size: 200px;
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #C4C4C4;
+  border-radius: 30px 30px 0 0;
+  position: sticky;
+  top: 0;
+  padding-block-start: 0;
+  z-index: 3;
 }
-
 .image-wrapper{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    width: 100px;
-    border-radius: 100px;
-    background: white;
-    border: none;
-    overflow: hidden;
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 100px;
+  block-size: 100px;
+  border-radius: var(--radius-full);
+  background: #fff;
+  border: none;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  aspect-ratio: 1 / 1;
 }
-
 .image-wrapper .image{
-    position:absolute;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
 }
-
 .image-wrapper .image img{
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
 }
 
 #custom-btn{
-    letter-spacing: 0.1em;
-    color: white;
-    font-weight: 200;
-    font-size: small;
-    margin-top: 20px;
-    width: 100%;
-    height: 50%;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: #666262;
+  letter-spacing: .1em;
+  color: #fff;
+  font-weight: 400;
+  font-size: .9rem;
+  margin-block-start: 20px;
+  inline-size: 100%;
+  block-size: 2.5rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: var(--clr-muted);
+  transition: filter .2s ease, transform .08s ease;
 }
+#custom-btn:hover{ filter: brightness(1.05); }
+#custom-btn:active{ transform: scale(.98); }
 
-/*College Department*/
+/* ---- College Department ---- */
 .modal-header{
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 .college-logo{
-    display: flex;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
 }
 .logo{
-    display: flex;
-    width: 100px; 
-    height: 100px;
+  display: flex;
+  inline-size: 100px;
+  block-size: 100px;
 }
-
 
 .student-details-image-container{
-    width: 140px; 
-    height: 140px; 
-    border-radius: 140px; 
-    display: flex;
-    overflow: hidden;
+  inline-size: 140px;
+  block-size: 140px;
+  border-radius: var(--radius-full);
+  display: flex;
+  overflow: hidden;
 }
-
 .student-table-image, .student-details-image{
-    flex: 1; 
-    justify-content: center; 
-    object-fit: cover; 
-    background-position: center;
+  flex: 1;
+  justify-content: center;
+  object-fit: cover;
+  background-position: center;
 }
-
 .student-table-image-container{
-    width: 50px;
-    height: 50px; 
-    border-radius: 50px; 
-    display: flex; 
-    border: 1px solid #F93939;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.20);
-    overflow: hidden;
+  inline-size: 50px;
+  block-size: 50px;
+  border-radius: var(--radius-full);
+  display: flex;
+  border: 1px solid var(--clr-accent);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
-.student-detailed-view{
-    background-color: #4E4E50;
-}
-
-#more-about{
-    color: white;
-}
+.student-detailed-view{ background-color: #4E4E50; }
+#more-about{ color: #fff; }
 
 .basic-info{
-    display: flex;
-    justify-content: center;
-    padding-top: 10px;
-    width: 80%;
+  display: flex;
+  justify-content: center;
+  gap: .4rem;
+  padding-block-start: 10px;
+  inline-size: min(80%, 48rem);
 }
-
 .basic-info #name {
-    color: white;
-    font-weight: bold;
-    font-size: 15px;
-    padding-right: 3px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  padding-inline-end: 3px;
 }
-
 .basic-info #IDno {
-    color: #666262;
-    font-weight: bold;
-    font-size: 15px;
-    padding-left: 3px;
+  color: var(--clr-muted);
+  font-weight: 700;
+  font-size: 15px;
+  padding-inline-start: 3px;
 }
 
 .college{
-    width: fit-content;
-    height: 10%;
-    left: 611px;
-    top: 776px;
-    padding-left: 2%;
-    padding-right: 2%;
-
-    background: #666262;
-    border-radius: 20px;
+  width: fit-content;
+  padding-inline: 2%;
+  padding-block: .25rem;
+  background: #666262;
+  border-radius: 20px;
 }
-
 .college p{
-    font-weight: normal;
-    font-size: 15px;
-    text-align: center;
-    letter-spacing: 100%;
-
-    color: #FFFFFF;
+  font-weight: 400;
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: .02em;
+  color: #FFFFFF;
+  margin: 0;
 }
 
 .contact{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: .5rem;
 }
-
-.contact i{
-    color: white;
-}
+.contact i{ color: #fff; }
 .contact p{
-    color: white;
-    font-size: small;
-    margin-left: 2%;
-    margin-top: 3%;
-    text-align: center;
+  color: #fff;
+  font-size: .875rem;
+  margin: 0;
+  text-align: center;
 }
 
+/* ================================
+   VISIBILITY HOT-FIX (High Contrast)
+   Paste at the very end of your CSS
+   ================================ */
+
+/* If your page background is dark, make the content readable */
+#main-content {
+  background: #0b1220;           /* deep navy */
+  color: #e5e7eb;                /* light text */
+}
+
+/* Search input must stay light for contrast */
+.searchfield {
+  background: #ffffff !important;
+  color: #0b1220 !important;
+  border: 2px solid #e11d48;     /* refined red */
+}
+.searchfield::placeholder { color: #64748b; opacity: 1; }
+
+/* Table: bright header, readable body */
+.table {
+  background: transparent;
+  color: #e5e7eb;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f8fafc;           /* very light */
+  color: #0b1220;                 /* dark text */
+  font-weight: 600;
+}
+
+/* Body rows: remove any dimming/opacity and increase contrast */
+.table tbody tr,
+.table tbody td {
+  opacity: 1 !important;
+  color: #e5e7eb !important;
+  background: transparent;
+}
+
+/* Zebra striping + hover to help scanning */
+.table tbody tr:nth-child(even) { background: rgba(255,255,255,0.04); }
+.table tbody tr:hover { background: #1f2937; }
+
+/* Row separators (optional) */
+.table tbody tr + tr td { border-top: 1px solid rgba(255,255,255,0.08); }
+
+/* Action buttons: ensure readable colors on dark bg */
+button, .btn, .btn1 {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* Update (yellow) and Delete (red) states if you use custom classes */
+.btn-update, .update, .btn-warning {
+  background: #f59e0b !important; /* amber */
+  color: #111827 !important;      /* dark text for contrast */
+  border: 1px solid rgba(17,24,39,0.15) !important;
+}
+.btn-delete, .delete, .btn-danger {
+  background: #ef4444 !important; /* red */
+  color: #ffffff !important;
+  border: 1px solid rgba(239,68,68,0.25) !important;
+}
+
+/* Pagination buttons */
+.pagination .page-link,
+button[aria-label="Previous"],
+button[aria-label="Next"] {
+  background: #111827 !important;
+  color: #e5e7eb !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+}
+.pagination .page-link:hover {
+  background: #1f2937 !important;
+}
+
+/* Links inside the dark card */
+#main-content a { color: #60a5fa; }
+#main-content a:hover { color: #93c5fd; }
+
+/* Make sure your table header doesn’t hide behind sticky toolbars */
+@media (max-width: 1024px){
+  .table thead th { top: 0; }
+}
+
+/* =========================================================
+   FIX DARK HEADER / NAV AREA VISIBILITY
+   ========================================================= */
+
+/* Main body background slightly lighter for contrast */
+body {
+  background-color: #111827 !important; /* slightly lighter navy */
+  color: #f1f5f9;
+}
+
+/* --- HEADER / TOP BAR --- */
+header, nav, .navbar, .topbar {
+  background-color: #1e293b !important; /* mid-gray blue */
+  color: #f8fafc !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Site title (SSIS) */
+header h1, .navbar-brand, .site-title {
+  color: #f8fafc !important;
+  font-weight: 600;
+}
+
+/* --- LOGOUT BUTTON --- */
+.logout,
+.logout-btn {
+  background-color: #f8fafc !important;
+  color: #111827 !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.logout:hover,
+.logout-btn:hover {
+  background-color: #e11d48 !important;
+  color: #fff !important;
+  border-color: #e11d48 !important;
+}
+
+/* --- NAVIGATION LINKS --- */
+.nav-item a,
+.nav-link {
+  color: #e2e8f0 !important;
+  font-weight: 500;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.nav-item a:hover,
+.nav-link:hover {
+  color: #ffffff !important;
+}
+
+/* --- ACTIVE NAV ITEM --- */
+.nav-item.active a,
+.nav-link.active {
+  background-color: #e11d48 !important;
+  color: #ffffff !important;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(225,29,72,0.4);
+}
+
+/* --- PAGE HEADINGS (like “Colleges Information”) --- */
+#main-content h2,
+#main-content h3,
+.page-title {
+  color: #f8fafc !important;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* --- MAIN CARD / PANEL BACKGROUND --- */
+#main-content {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-radius: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+}
+
+/* --- TABLE HEADINGS --- */
+.table thead th {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* --- TABLE ROWS --- */
+.table tbody td {
+  color: #e2e8f0 !important;
+}
+.table tbody tr:hover {
+  background-color: #334155 !important;
+}
+
+/* --- SEARCH BOX AND FIELD SELECT --- */
+.searchfield,
+select,
+input[type="text"],
+input[type="search"] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 2px solid #e11d48 !important;
+}
+.searchfield::placeholder {
+  color: #64748b;
+}
+
+/* --- ADD ICON BUTTON --- */
+#addNew,
+#addICON,
+#addcollegeICON {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+#addNew:hover {
+  background-color: #e11d48 !important;
+  border-radius: 25px;
+  box-shadow: 0 0 10px rgba(225,29,72,0.4);
+}
+
+/* --- GLOBAL CONTRAST FIX FOR TEXT --- */
+p, span, label, td, th, h1, h2, h3, h4, h5, h6 {
+  color: #f1f5f9 !important;
+}
+
+
+/* =========================================================
+   FINAL LOGOUT BUTTON FIX
+   ========================================================= */
+
+.logout,
+.logout-btn {
+  background-color: #e11d48 !important;   /* Bright red */
+  color: #ffffff !important;              /* White text */
+  border: none !important;
+  font-weight: 600 !important;
+  padding: 6px 18px !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.logout:hover,
+.logout-btn:hover {
+  background-color: #be123c !important;   /* Darker red on hover */
+  transform: translateY(1px);
+  color: #fff !important;
+}
+
+.logout:active,
+.logout-btn:active {
+  background-color: #9f1239 !important;
+  transform: scale(0.97);
+}
+
+.logout-text {
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+/* =========================================================
+   LOGOUT BUTTON SIZE & COVER FIX
+   ========================================================= */
+.logout,
+.logout-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  background-color: #e11d48 !important;   /* Red background */
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  padding: 0.4rem 1rem !important;        /* controls button size */
+  border-radius: 9999px !important;       /* pill shape */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  width: auto !important;                 /* removes fixed 80px */
+  height: auto !important;                /* removes fixed 25px */
+}
+
+.logout:hover,
+.logout-btn:hover {
+  background-color: #be123c !important;   /* Darker red hover */
+  transform: translateY(1px);
+}
+
+.logout:active,
+.logout-btn:active {
+  background-color: #9f1239 !important;
+  transform: scale(0.97);
+}
+
+.logout-text {
+  color: #fff !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
