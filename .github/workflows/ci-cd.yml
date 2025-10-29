@@ -14,10 +14,10 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_DATABASE: ssisdb
-          MYSQL_USER: ssis_user
-          MYSQL_PASSWORD: ssis_password
-          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -52,12 +52,13 @@ jobs:
     - name: Security scan with Bandit
       run: bandit -r . -c .bandit.yml || true
 
-    - name: Run Tests
+    - name: Run tests
       env:
-        MYSQL_HOST: localhost
-        MYSQL_USER: ssis_user
-        MYSQL_PASSWORD: ssis_password
-        MYSQL_DATABASE: ssisdb
+        DB_HOST: ${{ secrets.MYSQL_HOST }}
+        DB_USERNAME: ${{ secrets.MYSQL_USER }}
+        DB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        DB_NAME: ${{ secrets.MYSQL_DATABASE }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
         python -m pytest tests/ -v
 

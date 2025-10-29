@@ -2,16 +2,26 @@ import pytest
 from ssis import create_app
 from ssis.models.admin import Admin
 import os
+import mysql.connector as mysql
+
+@pytest.fixture(scope='session')
+def db_connection(database_config):
+    """Create a test database connection"""
+    connection = mysql.connect(**database_config)
+    yield connection
+    connection.close()
 
 @pytest.fixture
-def app():
+def app(db_connection):
     app = create_app()
     app.config.update({
         'TESTING': True,
-        'MYSQL_HOST': os.getenv('MYSQL_HOST', 'localhost'),
-        'MYSQL_USER': os.getenv('MYSQL_USER', 'ssis_user'),
-        'MYSQL_PASSWORD': os.getenv('MYSQL_PASSWORD', 'ssis_password'),
-        'MYSQL_DB': os.getenv('MYSQL_DATABASE', 'ssisdb')
+        'DB_CONNECTION': db_connection,
+        'DB_HOST': os.getenv('DB_HOST'),
+        'DB_USERNAME': os.getenv('DB_USERNAME'),
+        'DB_PASSWORD': os.getenv('DB_PASSWORD'),
+        'DB_NAME': os.getenv('DB_NAME'),
+        'SECRET_KEY': os.getenv('SECRET_KEY')
     })
     return app
 
