@@ -102,22 +102,4 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/ssis-web:${{ github.sha }}
 
 
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-    steps:
-    - name: Skip deploy (no Render hook configured)
-      if: ${{ !secrets.RENDER_DEPLOY_HOOK }}
-      run: |
-        echo "ℹ️ Skipping deploy: RENDER_DEPLOY_HOOK secret not set."
-
-    - name: Trigger Production Deploy (Render Hook)
-      if: ${{ secrets.RENDER_DEPLOY_HOOK }}
-      env:
-        RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
-      run: |
-        set -e
-        curl -fsSL -X POST "$RENDER_DEPLOY_HOOK"
-        echo "🚀 Deployment Triggered Successfully!"
+  
