@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=ssis_user
+      - MYSQL_PASSWORD=ssis_password
+      - MYSQL_DATABASE=ssisdb
+    depends_on:
+      - db
+    networks:
+      - ssis_network
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=ssisdb
+      - MYSQL_USER=ssis_user
+      - MYSQL_PASSWORD=ssis_password
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db_script:/docker-entrypoint-initdb.d
+    networks:
+      - ssis_network
+    restart: unless-stopped
+
+networks:
+  ssis_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

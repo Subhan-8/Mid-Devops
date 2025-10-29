@@ -1,0 +1,12 @@
+# Bandit configuration file
+exclude_dirs: ['.git', 'venv', '.venv', '__pycache__', 'tests']
+tests: ['B201', 'B301']
+skips: ['B101']
+
+# Severity levels
+severity: medium
+confidence: medium
+
+# Output format
+output_format: text
+output_file: bandit-results.txt
