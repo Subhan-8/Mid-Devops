@@ -10,6 +10,10 @@ def create_app(test_db=None) -> object:
         import ssis.models
         ssis.models.db = test_db
         ssis.models.cursor = test_db.cursor()
+    else:
+        # Initialize default DB connection for runtime
+        import ssis.models
+        ssis.models.init_connection()
 
     # import blueprints
     from .views.admin import admin
