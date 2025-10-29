@@ -9,7 +9,7 @@ from math import ceil
 
 current_page = 1
 
-@college.route('/colleges', methods=['GET', 'POST'])
+@college.route('/', methods=['GET', 'POST'])
 def colleges() -> str:
     students = Student().get_all(paginate=False)
     courses = Course().get_all(paginate=False)

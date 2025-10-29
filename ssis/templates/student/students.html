@@ -86,7 +86,7 @@
                     src="../static/entity_photos/students/{{student.7}}">
                 </div>
             </td>
-            {% elif 'cloudinary.com' in student.7 %}
+            {% elif student.7 and ('cloudinary.com' in student.7) %}
             <td data-bs-toggle="modal" data-bs-target="#student{{student.0}}">
                 <div class="student-table-image-container">
                     <img class="student-table-image" src="{{student.7}}">
@@ -100,10 +100,9 @@
                 </div>
             </td>
             {% endif %}
-            {% if student[2].strip() != '' %}
+            {% if student[2] %}
             <td>{{student.1}} {{student[2][0]}}. {{student.3}}</td>
-            {% endif %}
-            {% if student[2].strip() == '' %}
+            {% else %}
             <td>{{student.1}} {{student.3}}</td>
             {% endif %}
             <td>{{student[4]}}</td>
@@ -225,7 +224,7 @@
                     <div class="student-details-image-container">
                         {% if student.7 and 'cloudinary.com' not in student.7 %}
                         <img class="student-details-image" src="../static/entity_photos/students/{{student.7}}">
-                        {% elif 'cloudinary.com' in student.7 %}
+                        {% elif student.7 and ('cloudinary.com' in student.7) %}
                         <img class="student-details-image" src="{{student.7}}">
                         {% endif %}
                     </div>

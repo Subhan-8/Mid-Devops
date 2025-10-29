@@ -13,15 +13,12 @@ class Admin:
 		self.password2 = password2
 
 	def registered_user(self) -> bool:
-		query = f'''
-		SELECT username, password
-		FROM admin
-		WHERE username = '{self.username}';
-		'''
-		cursor.execute(query)
-		try:
-		    username, password = cursor.fetchone()
-		except TypeError:
-		    return None
-		if check_password_hash(password, self.password):
-		    return True
+		query = (
+			"SELECT username, password FROM admin WHERE username = %s"
+		)
+		cursor.execute(query, (self.username,))
+		row = cursor.fetchone()
+		if not row:
+			return False
+		_, password = row
+		return bool(check_password_hash(password, self.password))

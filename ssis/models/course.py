@@ -17,10 +17,10 @@ class Course():
             return self.course_list()
         offset = (page_num - 1) * item_per_page
         query = f'''
-            SELECT course.code, course.name, course.college, college.name
+            SELECT course.code, course.name, course.collegecode, college.name
             FROM course
             JOIN college
-            ON course.college = college.code
+            ON course.collegecode = college.code
             LIMIT {item_per_page} OFFSET {offset}
         '''
         cursor.execute(query)
@@ -41,10 +41,10 @@ class Course():
     @staticmethod
     def course_list() -> list:
         query = f'''
-            SELECT course.code, course.name, course.college, college.name
+            SELECT course.code, course.name, course.collegecode, college.name
             FROM course
             JOIN college
-            ON course.college = college.code
+            ON course.collegecode = college.code
         '''
         cursor.execute(query)
         result = cursor.fetchall()
@@ -120,7 +120,7 @@ class Course():
             INSERT INTO course (
                 code,
                 name,
-                college)
+                collegecode)
             VALUES (
                 '{self.code}',
                 '{self.name}',
@@ -148,7 +148,7 @@ class Course():
             SET 
                 code = '{self.code}',
                 name = '{self.name}',
-                college = '{self.college}'
+                collegecode = '{self.college}'
             WHERE
                 code = '{self.code}'
         '''
@@ -163,7 +163,7 @@ class Course():
             SELECT course.name, college.code
             FROM course
             JOIN college
-            ON course.college = college.code
+            ON course.collegecode = college.code
             WHERE course.name = '{course_name}'
             LIMIT 1
         '''

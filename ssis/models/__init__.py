@@ -1,13 +1,20 @@
 import mysql.connector as mysql
 from os import getenv
 
-db = mysql.connect(
-            host = getenv('DB_HOST'),
-            user = getenv('DB_USERNAME'),
-            password = getenv('DB_PASSWORD'),
-            database = getenv('DB_NAME')
+# Lazily initialized DB connection for better testability
+db = None
+cursor = None
+
+def init_connection():
+    global db, cursor
+    if db is None or cursor is None:
+        db = mysql.connect(
+            host=getenv('DB_HOST'),
+            user=getenv('DB_USERNAME'),
+            password=getenv('DB_PASSWORD'),
+            database=getenv('DB_NAME')
         )
-cursor = db.cursor()
+        cursor = db.cursor()
 
 
 
