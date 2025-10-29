@@ -108,7 +108,16 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
-    - name: Trigger Production Deploy (Render Example)
+    - name: Skip deploy (no Render hook configured)
+      if: ${{ !secrets.RENDER_DEPLOY_HOOK }}
       run: |
-        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+        echo "ℹ️ Skipping deploy: RENDER_DEPLOY_HOOK secret not set."
+
+    - name: Trigger Production Deploy (Render Hook)
+      if: ${{ secrets.RENDER_DEPLOY_HOOK }}
+      env:
+        RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+      run: |
+        set -e
+        curl -fsSL -X POST "$RENDER_DEPLOY_HOOK"
         echo "🚀 Deployment Triggered Successfully!"
