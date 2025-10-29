@@ -19,7 +19,7 @@ jobs:
         ports:
           - "3306:3306"
         options: >-
-          --health-cmd='mysqladmin ping -h 127.0.0.1 -uroot -p"$$MYSQL_ROOT_PASSWORD" --silent'
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"
           --health-interval=5s
           --health-timeout=3s
           --health-retries=10
@@ -31,7 +31,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-        cache: 'pip'
+        cache: pip
 
     - name: Install Dependencies
       run: |
@@ -40,12 +40,10 @@ jobs:
         pip install -r requirements-dev.txt
 
     - name: Wait for MySQL to be Ready
-      env:
-        MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
       run: |
         echo "⏳ Waiting for MySQL..."
-        for i in {1..20}; do
-          if mysqladmin ping -h "127.0.0.1" -uroot -p"$MYSQL_PASSWORD" --silent; then
+        for i in {1..15}; do
+          if mysqladmin ping -h "127.0.0.1" -uroot -p"${{ secrets.MYSQL_PASSWORD }}" --silent; then
             echo "✅ MySQL is ready!"
             exit 0
           fi
