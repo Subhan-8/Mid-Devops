@@ -1,22 +1,20 @@
 from werkzeug.security import generate_password_hash
 import mysql.connector as mysql
 
-
-
-class Admin():
+class Admin:
     def __init__(self, username, password) -> None:
+        # Use correct hash method
         self.username = username
-        self.password = generate_password_hash(password, 'sha256')
+        self.password = generate_password_hash(password, method='pbkdf2:sha256')
     
     def add(self):
         query = f'''
-        INSERT INTO admin(username,password)
-        VALUE ('{self.username}', '{self.password}')
+        INSERT INTO admin(username, password)
+        VALUES ('{self.username}', '{self.password}')
         '''
         cursor.execute(query)
         db.commit()
         print('Admin added!')
-
 
 if __name__ == '__main__':
     print('To establish MySQL Connection')
@@ -25,17 +23,17 @@ if __name__ == '__main__':
     password = input("Enter your database password: ")
 
     db = mysql.connect(
-            host = host,
-            user = user,
-            password = password,
-            database = 'ssisdb'
-        )
+        host=host,
+        user=user,
+        password=password,
+        database='ssisdb'
+    )
     cursor = db.cursor()
 
-    print('MySQL connection established!')
-    print()
-    print('For your SSIS crendential')
+    print('MySQL connection established!\n')
+    print('For your SSIS credentials')
     username = input("Username: ")
     password = input("Password: ")
-    Admin(username,password).add()
+
+    Admin(username, password).add()
     
