@@ -70,7 +70,9 @@ jobs:
         DB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         DB_NAME: ${{ secrets.MYSQL_DATABASE }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      run: pytest -v
+      run: |
+        export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+        pytest -v
 
 
   build-and-push:
