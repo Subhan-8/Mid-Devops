@@ -65,8 +65,8 @@ def pytest_configure(config):
             CREATE TABLE IF NOT EXISTS course (
                 code VARCHAR(10) PRIMARY KEY,
                 name VARCHAR(100) NOT NULL,
-                collegecode VARCHAR(10),
-                FOREIGN KEY (collegecode) REFERENCES college(code)
+                college VARCHAR(10),
+                FOREIGN KEY (college) REFERENCES college(code)
             )
         """)
         
@@ -100,7 +100,7 @@ def pytest_configure(config):
         """)
         
         cursor.execute("""
-            INSERT IGNORE INTO course (code, name, collegecode) 
+            INSERT IGNORE INTO course (code, name, college) 
             VALUES ('CRS1', 'Test Course', 'COL1')
         """)
         
