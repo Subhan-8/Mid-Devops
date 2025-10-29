@@ -1,31 +1,63 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-.row{
-    background-color: white;
-    border-radius: 30px;
-    box-shadow: 12px 12px 22px grey;
-}
-#main-image{
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-}
-.btn1{
-    border: none;
-    outline: none;
-    height: 50px;
-    width: 100%;
-    background-color : #F93939;
-    color: white;
-    border-radius: 10px;
+/* ======================
+   INDEX.CSS — Modernized
+   ====================== */
 
-    font-style: normal;
-    font-weight: bold;
+/* Small reset */
+* { padding: 0; margin: 0; box-sizing: border-box; }
+
+/* Card row */
+.row{
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0 10px 26px rgba(0,0,0,.15); /* softer, modern */
+  overflow: hidden; /* ensure child radii clip */
+}
+
+/* Main hero/side image with logical corners */
+#main-image{
+  border-start-start-radius: 30px; /* top-left */
+  border-end-start-radius: 30px;   /* bottom-left */
+  display: block;
+  inline-size: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Primary button */
+.btn1{
+  border: none;
+  outline: none;
+  height: 50px;
+  inline-size: 100%;
+  background-color: #F93939;
+  color: #fff;
+  border-radius: 12px;
+
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: .02em;
+  transition: background-color .2s ease, color .2s ease, transform .08s ease, box-shadow .2s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(249,57,57,.25);
 }
 .btn1:hover{
-    background-color : white;
-    color: #F93939;
-    border: 2px solid #F93939;
+  background-color: #fff;
+  color: #F93939;
+  border: 2px solid #F93939;
+  box-shadow: 0 6px 16px rgba(249,57,57,.28);
+}
+.btn1:active{
+  transform: translateY(1px);
+}
+.btn1:focus-visible{
+  outline: 3px solid rgba(249,57,57,.35);
+  outline-offset: 2px;
+}
+
+/* Disabled state (if applied) */
+.btn1[disabled],
+.btn1:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+  box-shadow: none;
 }
