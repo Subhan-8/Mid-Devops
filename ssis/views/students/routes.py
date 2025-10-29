@@ -15,7 +15,7 @@ from .utils import (add_student_to_db,
 current_page = 1
 student_limit = 5
 
-@student.route('/students', methods=['GET', 'POST'])
+@student.route('/', methods=['GET', 'POST'])
 def students() -> str:
     global student_limit
 

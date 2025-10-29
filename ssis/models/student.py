@@ -29,16 +29,16 @@ class Student():
             return self.student_list()
         offset = (page_num - 1) * item_per_page
         query = f'''
-            SELECT id, 
-                   firstname, 
-                   middlename, 
-                   lastname, 
-                   gender, 
-                   year, 
-                   coursecode, 
-                   photo, 
+            SELECT students.id, 
+                   students.firstname, 
+                   students.middlename, 
+                   students.lastname, 
+                   students.gender, 
+                   students.year, 
+                   students.coursecode, 
+                   students.photo, 
                    course.name, 
-                   collegecode, 
+                   students.collegecode, 
                    college.name
             FROM students
             JOIN course
@@ -65,16 +65,16 @@ class Student():
     @staticmethod
     def student_list() -> list:
         query = f'''
-            SELECT id, 
-                   firstname, 
-                   middlename, 
-                   lastname, 
-                   gender, 
-                   year, 
-                   coursecode, 
-                   photo, 
+            SELECT students.id, 
+                   students.firstname, 
+                   students.middlename, 
+                   students.lastname, 
+                   students.gender, 
+                   students.year, 
+                   students.coursecode, 
+                   students.photo, 
                    course.name, 
-                   collegecode, 
+                   students.collegecode, 
                    college.name
             FROM students
             JOIN course

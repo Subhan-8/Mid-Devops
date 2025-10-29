@@ -18,7 +18,7 @@ class College:
 				COALESCE(enrolled.student, 0) AS enrolled
 			FROM college
 			JOIN course
-				ON college.code = course.college
+				ON college.code = course.collegecode
 			LEFT JOIN (
 				SELECT collegecode, COUNT(*) AS student
 				FROM students
@@ -65,7 +65,7 @@ class College:
 			SELECT college.code, course.name
 			FROM college
 			JOIN course
-			ON college.code = course.college;
+			ON college.code = course.collegecode;
 		'''
 		cursor.execute(query)
 		result = cursor.fetchall()

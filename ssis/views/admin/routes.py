@@ -3,7 +3,7 @@ from flask.helpers import url_for
 from . import admin
 from .utils import admin_found
 
-@admin.route('/')
+@admin.route('/login')
 def login() -> str:
     return render_template('/admin/login.html')
 

@@ -6,10 +6,10 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MYSQL_HOST=db
-      - MYSQL_USER=ssis_user
-      - MYSQL_PASSWORD=ssis_password
-      - MYSQL_DATABASE=ssisdb
+      - DB_HOST=db
+      - DB_USERNAME=ssis_user
+      - DB_PASSWORD=ssis_password
+      - DB_NAME=ssisdb
     depends_on:
       - db
     networks:
@@ -31,6 +31,11 @@ services:
     networks:
       - ssis_network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
 networks:
   ssis_network:

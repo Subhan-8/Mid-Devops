@@ -10,7 +10,7 @@ from math import ceil
 current_page = 1
 course_limit = 5
 
-@course.route('/courses')
+@course.route('/')
 def courses() -> str:
     global course_limit
 
