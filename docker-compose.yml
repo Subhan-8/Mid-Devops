@@ -5,13 +5,13 @@ services:
     build: .
     ports:
       - "5000:5000"
-    environment:
-      - DB_HOST=db
-      - DB_USERNAME=ssis_user
-      - DB_PASSWORD=ssis_password
-      - DB_NAME=ssisdb
+    # Load real credentials from .env (DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, SECRET_KEY)
+    env_file:
+      - .env
+    # If using the bundled MySQL container, ensure DB_HOST=db in your .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - ssis_network
     restart: unless-stopped
