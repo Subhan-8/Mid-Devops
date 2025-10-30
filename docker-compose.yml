@@ -1,15 +1,17 @@
+version: '3.8'
+
 services:
   web:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
     environment:
       - DB_HOST=db
-      - DB_NAME=ssisdb
-      - DB_USERNAME=root
+      - DB_USER=root
       - DB_PASSWORD=123$ubhanS
+      - DB_NAME=ssisdb
       - SECRET_KEY=${SECRET_KEY:-any_random_secret_key}
     depends_on:
       db:
@@ -32,7 +34,7 @@ services:
       - ssis_network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-prootpassword"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p123$ubhanS"]
       interval: 5s
       timeout: 5s
       retries: 20
