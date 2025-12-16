@@ -23,6 +23,7 @@ class Course:
             FROM course
             JOIN college
             ON course.college = college.code
+            ORDER BY course.code DESC
             LIMIT {item_per_page} OFFSET {offset}
         '''
         cursor.execute(query)

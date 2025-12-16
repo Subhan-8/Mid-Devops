@@ -29,6 +29,7 @@ class College:
 				college.code, 
 				college.name, 
 				enrolled.student
+			ORDER BY college.code DESC
 			LIMIT {item_per_page} OFFSET {offset};
 		'''
 		cursor.execute(query)

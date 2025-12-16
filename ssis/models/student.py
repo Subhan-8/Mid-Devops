@@ -45,6 +45,7 @@ class Student():
             ON students.coursecode = course.code
             JOIN college
             ON students.collegecode = college.code
+            ORDER BY students.id DESC
             LIMIT {item_per_page} OFFSET {offset}
         '''
         cursor.execute(query)

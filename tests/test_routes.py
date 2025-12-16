@@ -91,7 +91,9 @@ def test_student_list(client):
     """Test student listing page"""
     response = client.get('/students/')
     assert response.status_code == 200
-    assert b"2021-0001" in response.data and b"Test Student" in response.data
+    # Template renders "First M. Last" if middle name exists
+    assert b"2021-0001" in response.data 
+    assert b"Test M. Student" in response.data
 
 def test_404_page(client):
     """Test 404 error handling"""

@@ -37,6 +37,10 @@ def pytest_configure(config):
 
         # Initialize database
         sql = load_sql_file('init_test_db.sql')
+        # Replace hardcoded database name with configured one
+        db_name = os.getenv('DB_NAME', 'ssisdb_test')
+        sql = sql.replace('ssisdb_test', db_name)
+        
         for statement in sql.split(';'):
             if statement.strip():
                 cursor.execute(statement + ';')
