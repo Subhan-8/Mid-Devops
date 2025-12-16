@@ -11,9 +11,15 @@ def create_app(test_db=None) -> object:
         ssis.models.db = test_db
         ssis.models.cursor = test_db.cursor()
     else:
-        # Initialize default DB connection for runtime
         import ssis.models
         ssis.models.init_connection()
+
+    # Initialize Redis
+    from flask_redis import FlaskRedis
+    import os
+    app.config['REDIS_URL'] = os.getenv('REDIS_URL', 'redis://ssis_redis:6379/0')
+    redis_client = FlaskRedis(app)
+    app.extensions['redis'] = redis_client
 
     # import blueprints
     from .views.admin import admin

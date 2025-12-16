@@ -11,12 +11,15 @@ services:
     environment:
       - DB_HOST=ssis_db
       - DB_USER=root
-      - DB_PASSWORD=123SubhanS
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=ssisdb
-      - SECRET_KEY=${SECRET_KEY:-any_random_secret_key}
+      - SECRET_KEY=${SECRET_KEY}
+      - REDIS_URL=redis://ssis_redis:6379/0
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - ssis_network
     restart: unless-stopped
@@ -28,7 +31,8 @@ services:
       - "3307:3306"
     environment:
       - MYSQL_DATABASE=ssisdb
-      - MYSQL_ROOT_PASSWORD=123SubhanS
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_HOST=%
     volumes:
       - mysql_data:/var/lib/mysql
       - ./db_script:/docker-entrypoint-initdb.d
@@ -36,10 +40,17 @@ services:
       - ssis_network
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p123SubhanS" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${DB_PASSWORD}" ]
       interval: 5s
       timeout: 5s
       retries: 20
+
+  redis:
+    container_name: ssis_redis
+    image: redis:alpine
+    networks:
+      - ssis_network
+    restart: unless-stopped
 
 networks:
   ssis_network:

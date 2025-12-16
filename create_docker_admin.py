@@ -2,11 +2,11 @@ from werkzeug.security import generate_password_hash
 import mysql.connector
 import os
 
-# Docker internal DB credentials (HARDCODED for this specific environment)
-DB_HOST = 'ssis_db'
-DB_USER = 'root'
-DB_PASS = '123SubhanS'
-DB_NAME = 'ssisdb'
+# Docker internal DB credentials
+DB_HOST = os.getenv('DB_HOST', 'ssis_db')
+DB_USER = os.getenv('DB_USER', 'root')
+DB_PASS = os.getenv('DB_PASSWORD', '123SubhanS')
+DB_NAME = os.getenv('DB_NAME', 'ssisdb')
 
 def add_admin():
     print("\n--- Creating Admin User for Docker ---")
