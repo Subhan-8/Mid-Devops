@@ -10,11 +10,13 @@ cursor = None
 def init_connection():
     global db, cursor
     if db is None or cursor is None:
-        retries = 5
+        retries = 30
         while retries > 0:
             try:
+                host = getenv('DB_HOST', 'db')
+                print(f"Connecting to database at {host}...")
                 db = mysql.connect(
-                    host=getenv('DB_HOST', 'db'),
+                    host=host,
                     user=getenv('DB_USER', 'root'),
                     password=getenv('DB_PASSWORD', '123$ubhanS'),
                     database=getenv('DB_NAME', 'ssisdb')
@@ -26,6 +28,7 @@ def init_connection():
                 print(f"Database connection failed: {err}")
                 retries -= 1
                 if retries == 0:
+                    print("Max retries reached. Exiting.")
                     raise err
-                print(f"Retrying in 5 seconds... ({retries} retries left)")
-                time.sleep(5)
+                print(f"Retrying in 2 seconds... ({retries} retries left)")
+                time.sleep(2)
