@@ -11,6 +11,11 @@ PRIMARY KEY(username)
 INSERT INTO `admin`(`username`, `password`)
 VALUES ('eden', 'sha256$ULUS96W3djTrRi7e$233ff68eb2b2c3593440e1d6c0dabaaea17a9f246328db4ab1f09d05f5929568');
 
+-- Grant remote access to root
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '123SubhanS';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
 CREATE TABLE `course`(
 code VARCHAR(10) NOT NULL,
 name VARCHAR(50) NOT NULL,

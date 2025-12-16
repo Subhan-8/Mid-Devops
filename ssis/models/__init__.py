@@ -18,7 +18,7 @@ def init_connection():
                 db = mysql.connect(
                     host=host,
                     user=getenv('DB_USER', 'root'),
-                    password=getenv('DB_PASSWORD', '123$ubhanS'),
+                    password=getenv('DB_PASSWORD', '123SubhanS'),
                     database=getenv('DB_NAME', 'ssisdb')
                 )
                 cursor = db.cursor()

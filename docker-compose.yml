@@ -2,15 +2,16 @@ version: '3.8'
 
 services:
   web:
+    container_name: ssis_web
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "5000:8080"
     environment:
-      - DB_HOST=db
+      - DB_HOST=ssis_db
       - DB_USER=root
-      - DB_PASSWORD=123$ubhanS
+      - DB_PASSWORD=123SubhanS
       - DB_NAME=ssisdb
       - SECRET_KEY=${SECRET_KEY:-any_random_secret_key}
     depends_on:
@@ -21,12 +22,13 @@ services:
     restart: unless-stopped
 
   db:
+    container_name: ssis_db
     image: mysql:8.0
     ports:
       - "3307:3306"
     environment:
       - MYSQL_DATABASE=ssisdb
-      - MYSQL_ROOT_PASSWORD=123$ubhanS
+      - MYSQL_ROOT_PASSWORD=123SubhanS
     volumes:
       - mysql_data:/var/lib/mysql
       - ./db_script:/docker-entrypoint-initdb.d
@@ -34,7 +36,7 @@ services:
       - ssis_network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p123$ubhanS"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p123SubhanS" ]
       interval: 5s
       timeout: 5s
       retries: 20
