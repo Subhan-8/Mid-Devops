@@ -1,69 +1,72 @@
-# CRUD WEB APPLICATION (CCC181 Assignment)
+# Web-based SSIS (DevOps Project)
 
-![crudwebapp](https://github.com/edenroseFR/Web-based-SSIS/blob/main/readme_files/image.PNG)
-## FEATURES
-- Display data
-- Add data
-- Edit data
-- Delete data
-- Search data
+A Flask-based Student Information System (SSIS) modernized with a full DevOps pipeline including Docker, Terraform, Ansible, Kubernetes, and CI/CD.
 
-## SETUP & INSTALLATION
-1. Clone the repository to your local machine by running the following command on your command-line.
-```bash
-clone 'https://github.com/edenroseFR/Web-based-SSIS.git'
-```
-2. Install all the requirements.
-```bash
-pip install -r requirements.txt
-```
-3. Create a dotenv file.
-```bash
-type nul > .env
-```
-4. Open the .env file and write the following:
-```python
-DB_HOST=your_database_host
-DB_NAME=ssisdb
-DB_USERNAME=your_database_username
-DB_PASSWORD=your_database_password
-SECRET_KEY=any_string_will_do
+## 🚀 Project Overview
 
-CLOUD_NAME = your_cloudinary_name
-API_KEY = your_cloudinary_api_key
-API_SECRET = your_cloudinary_api_secretkey
-PHOTO_UPLOAD = cloud
-```
-5. Create a flaskenv file.
-```bash
-type nul > .flaskenv
-```
-6. Open the .flaskenv file and make sure it contains the following:
-```python
-FLASK_APP=ssis
-FLASK_ENV=development
-FLASK_RUN_PORT=8080
-```
-7. In your MySQL IDE, execute the script.sql file located in `WEB_BASED_SSIS/db_script`
-8. To create your own login credential, run add_admin.py. Make sure you are inside `WEB_BASED_SSIS` directory before executing the following:
-```bash
-python add_admin.py
-```
-9. Make sure you see the **Admin added!** in your console, before moving to the next step.
+This project demonstrates the transformation of a legacy monolithic application into a scalable, cloud-native architecture.
 
-## RUNNING THE APP
-1. Activate the virtual environment
-```bash
-cd venv/Scripts/activate
-```
-2. Run
-```bash
-flask run
+**Key Features:**
+*   **Containerization**: Multi-stage Docker builds for optimized images.
+*   **Infrastructure as Code**: Terraform for AWS provisioning (VPC, EC2, S3).
+*   **Configuration Management**: Ansible for server setup (K3s, Docker).
+*   **Orchestration**: Kubernetes (K3s) for managing Flask, MySQL, and Redis.
+*   **CI/CD**: GitHub Actions for automated testing, building, and deployment.
+*   **Monitoring**: Prometheus and Grafana for observability.
+
+## 🛠️ Tech Stack
+
+*   **App**: Python (Flask), MySQL, Redis
+*   **Container**: Docker, Docker Compose
+*   **Infrastructure**: Terraform (AWS)
+*   **Config Config**: Ansible
+*   **Cluster**: K3s (Lightweight Kubernetes)
+*   **CI/CD**: GitHub Actions
+
+## 🏃 Getting Started (Local)
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/Subhan-8/Mid-Devops.git
+    cd Mid-Devops
+    ```
+
+2.  **Run with Docker Compose**:
+    ```bash
+    docker-compose up --build
+    ```
+
+3.  **Access the App**:
+    *   Web: `http://localhost:5000`
+    *   phpMyAdmin: `http://localhost:8080`
+
+## ☁️ Deployment Architecture
+
+```mermaid
+graph TD
+    User -->|HTTP| AWS_ELB[AWS Security Group]
+    AWS_ELB -->|NodePort 30080| EC2[EC2 Instance]
+    subgraph K3s Cluster
+        Ingress --> Service[K8s Service]
+        Service --> Pod1[Flask App]
+        Service --> Pod2[Flask App]
+        Pod1 --> Redis[Redis Pod]
+        Pod1 --> DB[MySQL Pod]
+    end
 ```
 
-# HOW TO CONTRIBUTE
-### Opening Issues
-If you encounter a bug, have a question, or want to suggest an enhancement, please open an issue. Be sure to provide as much detail as possible, including steps to reproduce the issue or a clear description of your feature request.
+## 🔄 CI/CD Pipeline
 
-### Pull Requests
-If you'd like to contribute code, feel free to submit a Pull Request to the `develop` branch :)
+The project uses GitHub Actions (`.github/workflows/ci-cd.yml`) with the following stages:
+
+1.  **Build & Test**: Runs `pytest`, `flake8`, `safety` checks.
+2.  **Build & Push**: Builds Docker image -> Docker Hub (`subhan45/ssis-web`).
+3.  **Infrastructure**: runs `terraform plan` to validate infrastructure changes.
+4.  **Deploy**: Connects via SSH and runs `kubectl apply`.
+5.  **Smoke Test**: Verifies application health via `curl`.
+
+## 📊 Monitoring
+
+*   **Prometheus**: Metrics collection (Port 30090).
+*   **Grafana**: Visual dashboards (Port 30091).
+*   **Node Exporter**: Sever-level metrics.
