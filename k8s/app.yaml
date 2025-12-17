@@ -16,7 +16,7 @@ spec:
       containers:
       - name: ssis-web
         # DockerHub User: subhan45
-        image: subhan45/ssis-app:latest
+        image: subhan45/ssis-web:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
