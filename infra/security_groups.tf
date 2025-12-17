@@ -43,6 +43,22 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Prometheus Access
+  ingress {
+    from_port   = 30090
+    to_port     = 30090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Grafana Access
+  ingress {
+    from_port   = 30091
+    to_port     = 30091
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Allow all outbound
   egress {
     from_port   = 0

@@ -27,5 +27,6 @@ jobs:
         
         echo "Found Security Group: $SG_ID"
         
-        # Authorize ingress (ignore error if already exists)
-        aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 30080 --cidr 0.0.0.0/0 || echo "Rule likely already exists"
+        aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 30080 --cidr 0.0.0.0/0 || echo "Rule 30080 likely exists"
+        aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 30090 --cidr 0.0.0.0/0 || echo "Rule 30090 likely exists"
+        aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 30091 --cidr 0.0.0.0/0 || echo "Rule 30091 likely exists"
