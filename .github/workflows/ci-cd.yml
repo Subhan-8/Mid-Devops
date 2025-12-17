@@ -149,9 +149,12 @@ jobs:
           fi
           
           # Deploy to K3s
+          kubectl apply -f k8s/namespace.yaml
+          sleep 5
+          kubectl apply -f k8s/secret.yaml
+          kubectl apply -f k8s/
           # Force restart to pick up new image
           kubectl rollout restart deployment/ssis-web -n dev || true
-          kubectl apply -f k8s/
           
     - name: Smoke Test
       run: |
