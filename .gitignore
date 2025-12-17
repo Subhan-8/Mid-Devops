@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+.terraform
+
+
 # Distribution / packaging
 .Python
 env/
@@ -94,4 +97,8 @@ ENV/
 .ropeproject
 
 #SSIS utility
-tempCodeRunnerFile.py
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
