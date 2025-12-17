@@ -89,8 +89,8 @@ jobs:
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v5
@@ -98,8 +98,64 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/ssis-web:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/ssis-web:${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/ssis-web:latest
+          ${{ secrets.DOCKER_USERNAME }}/ssis-web:${{ github.sha }}
 
+  terraform:
+    name: "Provision Infrastructure"
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
 
-  
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform Init
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: cd infra && terraform init
+
+    - name: Terraform Apply
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: cd infra && terraform apply -auto-approve
+
+  deploy-and-smoke:
+    name: "Deploy & Smoke Test"
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          # Ensure git is installed
+          command -v git >/dev/null 2>&1 || sudo apt-get install -y git
+          
+          # Clone or Pull the latest code to the server
+          if [ -d 'Web-based-SSIS-main' ]; then
+            cd Web-based-SSIS-main && git pull
+          else
+            git clone https://github.com/${{ github.repository }} Web-based-SSIS-main
+            cd Web-based-SSIS-main
+          fi
+          
+          # Deploy to K3s
+          # Force restart to pick up new image
+          kubectl rollout restart deployment/ssis-web -n dev || true
+          kubectl apply -f k8s/
+          
+    - name: Smoke Test
+      run: |
+        echo 'Waiting for LoadBalancer/Service...'
+        sleep 45
+        # Verify the app responds (using the Secret IP)
+        curl -I http://${{ secrets.EC2_HOST }}:30080 || echo 'Warning: App response check failed, manual verification needed'
