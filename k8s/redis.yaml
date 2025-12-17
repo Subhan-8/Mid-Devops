@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ssis-redis
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: ssis-redis
+  template:
+    metadata:
+      labels:
+        app: ssis-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ssis-redis
+  namespace: dev
+spec:
+  selector:
+    app: ssis-redis
+  ports:
+  - port: 6379
+    targetPort: 6379

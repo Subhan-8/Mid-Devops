@@ -1,0 +1,51 @@
+---
+- name: Setup K3s and Docker on Webserver
+  hosts: webserver
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      register: apt_status
+      retries: 5
+      delay: 10
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start Docker Service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Download K3s installer
+      get_url:
+        url: https://get.k3s.io
+        dest: /tmp/k3s_install.sh
+        mode: '0700'
+
+    - name: Install K3s (Master Node)
+      shell: sh /tmp/k3s_install.sh
+      environment:
+        INSTALL_K3S_EXEC: "--write-kubeconfig-mode 644" # Public read for convenience
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Wait for K3s to be ready
+      shell: kubectl get nodes
+      register: k3s_status
+      until: k3s_status.rc == 0
+      retries: 20
+      delay: 5
+
+    - name: Copy kubeconfig to ubuntu user (optional)
+      copy:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: /home/ubuntu/.kube/config
+        remote_src: yes
+        owner: ubuntu
+        mode: '0600'
+      ignore_errors: yes
