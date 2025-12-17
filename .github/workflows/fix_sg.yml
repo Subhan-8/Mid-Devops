@@ -1,0 +1,31 @@
+name: Fix Security Group
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  open-port:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Open Port 30080
+      run: |
+        # Try to find the SG ID by name
+        SG_ID=$(aws ec2 describe-security-groups --filters Name=group-name,Values=ssis-web-sg --query "SecurityGroups[0].GroupId" --output text)
+        
+        if [ "$SG_ID" == "None" ] || [ -z "$SG_ID" ]; then
+          echo "Security Group ssis-web-sg not found!"
+          exit 1
+        fi
+        
+        echo "Found Security Group: $SG_ID"
+        
+        # Authorize ingress (ignore error if already exists)
+        aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 30080 --cidr 0.0.0.0/0 || echo "Rule likely already exists"
