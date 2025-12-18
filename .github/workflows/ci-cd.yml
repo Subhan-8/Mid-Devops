@@ -148,12 +148,12 @@ jobs:
             cd Web-based-SSIS-main
           fi
           
-          # Deploy to K3s
-          kubectl apply -f k8s/namespace.yaml
           kubectl apply -f k8s/monitoring/namespace.yaml
           sleep 5
           kubectl apply -f k8s/secret.yaml
+          kubectl apply -f k8s/db-init.yaml
           kubectl apply -f k8s/
+          kubectl apply -f k8s/monitoring/
           kubectl apply -f k8s/monitoring/
           # Force restart to pick up new image
           kubectl rollout restart deployment/ssis-web -n dev || true
