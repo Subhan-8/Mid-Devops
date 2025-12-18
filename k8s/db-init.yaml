@@ -17,7 +17,7 @@ data:
 
     INSERT INTO `admin`(`username`, `password`)
     VALUES ('eden', 'sha256$ULUS96W3djTrRi7e$233ff68eb2b2c3593440e1d6c0dabaaea17a9f246328db4ab1f09d05f5929568');
-    INSERT INTO `admin`(`username`, `password`) VALUES ('admin', 'sha256$8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c91');
+    INSERT INTO `admin`(`username`, `password`) VALUES ('admin', 'pbkdf2:sha256:1000000$Zp9apqh8qcqRwPBQ$1e6aa25fddc89e429fc3907c89403b067d07ffcf5666bbc6982b9d90ec1cdb3f');
 
     CREATE TABLE `course`(
     code VARCHAR(10) NOT NULL,
